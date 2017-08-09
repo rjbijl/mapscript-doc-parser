@@ -10,6 +10,11 @@ namespace Rjbijl\Model;
 class StubModel
 {
     /**
+     * @var string
+     */
+    private $source;
+
+    /**
      * @var ConstantModel[]
      */
     private $constants;
@@ -26,15 +31,17 @@ class StubModel
 
     /**
      * StubModel constructor.
+     * @param string $source
      * @param array $constants
      * @param array $functions
      * @param array $classes
      */
-    public function __construct(array $constants, array $functions, array $classes)
+    public function __construct($source, array $constants, array $functions, array $classes)
     {
         $this->constants = $constants;
         $this->functions = $functions;
         $this->classes = $classes;
+        $this->source = $source;
     }
 
     /**
@@ -65,5 +72,15 @@ class StubModel
     public function getClasses()
     {
         return $this->classes;
+    }
+
+    /**
+     * Getter for source
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return $this->source;
     }
 }

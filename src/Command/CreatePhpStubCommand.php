@@ -54,11 +54,13 @@ class CreatePhpStubCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // open the document
+        $sourceFile = $input->getOption('source-file');
         $docs = fopen($input->getOption('source-file'), 'r');
 
         $this->readFile($output, $docs);
 
         $stub = new StubModel(
+            $sourceFile,
             $this->parseConstants($output),
             $this->parseFunctions($output),
             $this->parseClasses($output)

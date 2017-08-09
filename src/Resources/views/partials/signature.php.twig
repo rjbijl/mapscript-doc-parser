@@ -1,0 +1,10 @@
+/**
+{% for line in item.description %}
+ * {{ line }}
+{% endfor %}
+ *
+{% for argument in item.arguments %}
+ * @param {{ argument.type }} {{ argument.name }}
+{% endfor %}
+ * @return {{ item.returnType }}
+ */
