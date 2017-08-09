@@ -22,6 +22,17 @@
 {% for class in stub.classes %}
 final class {{ class.className }}
 {
+{% for member in class.members %}
+    /**
+{% if member.description is not empty %}
+     * {{ member.description }}
+     *
+{% endif %}
+     * @var {{ member.type }}
+     */
+    public ${{ member.name }};
+
+{% endfor %}
 }
 
 {% endfor %}

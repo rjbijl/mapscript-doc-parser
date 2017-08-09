@@ -9,15 +9,25 @@ namespace Rjbijl\Model;
  */
 class ClassModel
 {
+    /**
+     * @var string
+     */
     private $className;
 
     /**
-     * ClassModel constructor.
-     * @param $className
+     * @var ClassMemberModel[]
      */
-    public function __construct($className)
+    private $members;
+
+    /**
+     * ClassModel constructor.
+     * @param string $className
+     * @param array $members
+     */
+    public function __construct($className, array $members)
     {
         $this->className = $className;
+        $this->members = $members;
     }
 
     /**
@@ -28,5 +38,15 @@ class ClassModel
     public function getClassName()
     {
         return $this->className;
+    }
+
+    /**
+     * Getter for members
+     *
+     * @return ClassMemberModel[]
+     */
+    public function getMembers()
+    {
+        return $this->members;
     }
 }
