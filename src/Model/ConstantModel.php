@@ -14,9 +14,26 @@ class ConstantModel
      */
     private $name;
 
-    public function __construct($name)
+    /**
+     * @var string
+     */
+    private $value;
+    /**
+     * @var string
+     */
+    private $description;
+
+    /**
+     * ConstantModel constructor.
+     * @param $name
+     * @param $value
+     * @param string $description
+     */
+    public function __construct($name, $value, $description = '')
     {
         $this->name = $name;
+        $this->value = $value;
+        $this->description = $description;
     }
 
     /**
@@ -27,5 +44,25 @@ class ConstantModel
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Getter for value
+     *
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Getter for description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

@@ -28,18 +28,22 @@ class ConstantsParser implements ParserInterface
             if (strstr($line, 'MS_') !== false) {
                 $parts = explode(',', $line);
                 foreach ($parts as $part) {
-                    if (!empty(trim($part))) {
-                        $constants[] = trim($part);
+                    if (!empty(trim($part)) && preg_match('/([A-Z_0-9]*)\s*(.*)$/', trim($part), $matches)) {
+                        if (!isset($constants[$matches[1]])) {
+                            $constants[$matches[1]] = [
+                                'value' => '\'\'',
+                                'description' => $matches[2],
+                            ];
+                        }
                     }
                 }
             }
         }
 
-        $constants = array_unique($constants);
-
         $models = [];
-        foreach ($constants as $constant) {
-            $models[] = new ConstantModel($constant);
+        foreach ($constants as $name => $properties) {
+            // all constants in the docs have no value :(
+            $models[] = new ConstantModel($name, $properties['value'], $properties['description']);
         }
 
         return $models;

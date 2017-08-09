@@ -1,0 +1,4 @@
+{% if constant.description is not empty %}
+// {{ constant.description }}
+{% endif %}
+const {{ constant.name }} = {{ constant.value|raw }};
