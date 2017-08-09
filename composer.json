@@ -1,0 +1,21 @@
+{
+    "name": "rjbijl/mapscript-doc-parser",
+    "description": "Create a php stub for mapscript, based on the docs",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Robert-Jan Bijl",
+            "email": "rjbijl@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/console": "^3.3"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^3.3"
+    },
+    "autoload": {
+        "psr-4": { "Rjbijl\\": "src/" }
+    }
+}
