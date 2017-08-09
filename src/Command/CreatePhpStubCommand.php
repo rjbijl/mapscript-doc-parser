@@ -3,6 +3,7 @@
 namespace Rjbijl\Command;
 
 use Rjbijl\Parser\ConstantsParser;
+use Rjbijl\Parser\FunctionsParser;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -89,7 +90,6 @@ class CreatePhpStubCommand extends Command
                         $this->readSections[$this->currentSection][] = $line;
                     }
                     break;
-
             }
         }
     }
@@ -108,7 +108,7 @@ class CreatePhpStubCommand extends Command
         $parsedConstants = $parser->parse($this->readSections['constants']);
 
         if ($output->isVerbose()) {
-            $output->writeln('Finised constants');
+            $output->writeln('Finished constants');
         }
 
         return $this->parsedSections['constants'] = $parsedConstants;
@@ -120,6 +120,18 @@ class CreatePhpStubCommand extends Command
      */
     private function parseFunctions(OutputInterface $output)
     {
+        $parser = new FunctionsParser();
+        if ($output->isVerbose()) {
+            $output->writeln('Parsing functions');
+        }
+
+        $parsedFunctions = $parser->parse($this->readSections['functions']);
+
+        if ($output->isVerbose()) {
+            $output->writeln('Finished functions');
+        }
+
+        return $this->parsedSections['functions'] = $parsedFunctions;
     }
 
     /**
