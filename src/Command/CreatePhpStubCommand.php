@@ -2,8 +2,10 @@
 
 namespace Rjbijl\Command;
 
+use Rjbijl\Model\StubModel;
 use Rjbijl\Parser\ConstantsParser;
 use Rjbijl\Parser\FunctionsParser;
+use Rjbijl\Renderer\StubRenderer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -56,11 +58,13 @@ class CreatePhpStubCommand extends Command
 
         $this->readFile($output, $docs);
 
-        $this->parseConstants($output);
-        $this->parseFunctions($output);
-        $this->parseClasses($output);
+        $stub = new StubModel(
+            $this->parseConstants($output),
+            $this->parseFunctions($output),
+            $this->parseClasses($output)
+        );
 
-        $this->writeStub($output);
+        $this->writeStub($output, $stub);
 
         exit(0);
     }
@@ -72,17 +76,17 @@ class CreatePhpStubCommand extends Command
             $line = fgets($docs);
             switch (trim($line)) {
                 case 'Functions':
-                    $output->writeln('Reading global functions');
+//                    $output->writeln('Reading global functions');
                     if ($this->currentSection !== 'classes') {
                         $this->currentSection = 'functions';
                     }
                     break;
                 case 'Classes':
-                    $output->writeln('Reading global classes');
+//                    $output->writeln('Reading global classes');
                     $this->currentSection = 'classes';
                     break;
                 case 'Constants':
-                    $output->writeln('Reading global constants');
+//                    $output->writeln('Reading global constants');
                     $this->currentSection = 'constants';
                     break;
                 default:
@@ -140,13 +144,16 @@ class CreatePhpStubCommand extends Command
      */
     private function parseClasses(OutputInterface $output)
     {
+        return [];
     }
 
     /**
      * @param OutputInterface $output
+     * @param StubModel $stubModel
      */
-    private function writeStub(OutputInterface $output)
+    private function writeStub(OutputInterface $output, StubModel $stubModel)
     {
-
+        $renderer = new StubRenderer();
+        echo $renderer->renderStub($stubModel);
     }
 }

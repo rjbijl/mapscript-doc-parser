@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * Mapscript extension (version 7.0.*)
+ * Parsed from documentation
+ * Generated at {{ now|date('Y-m-d H:i:s') }}
+ *
+ * @see https://raw.githubusercontent.com/mapserver/docs/branch-7-0/en/mapscript/php/phpmapscript.txt
+ * @see http://mapserver.org/mapscript/php/phpmapscript.html
+ */
+
+// constants
+{% for constant in stub.constants %}
+const {{ constant.name }}
+{% endfor %}
+
+{% for function in stub.functions %}
+/**
+{% for line in function.description %}
+ * {{ line }}
+{% endfor %}
+ *
+{% for argument in function.arguments %}
+ * @param {{ argument.type }} {{ argument.name }}
+{% endfor %}
+ * @return {{ function.returnType }}
+ */
+final function {{ function.name }}({% for argument in function.arguments %}{{ argument.type }} {{ argument.name }}{% endfor %}) {}
+
+{% endfor %}
