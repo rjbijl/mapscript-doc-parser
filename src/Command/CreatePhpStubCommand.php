@@ -66,7 +66,9 @@ class CreatePhpStubCommand extends Command
             $this->parseClasses($output)
         );
 
-        $this->writeStub($output, $stub);
+        $contents = $this->writeStub($output, $stub);
+
+        file_put_contents($input->getOption('target-file'), $contents);
 
         exit(0);
     }
@@ -156,6 +158,6 @@ class CreatePhpStubCommand extends Command
     private function writeStub(OutputInterface $output, StubModel $stubModel)
     {
         $renderer = new StubRenderer();
-        echo $renderer->renderStub($stubModel);
+        return $renderer->renderStub($stubModel);
     }
 }
