@@ -9,6 +9,8 @@ namespace Rjbijl\Model;
  */
 class FunctionModel
 {
+    use ArgumentTrait;
+
     /**
      * @var string
      */
@@ -121,7 +123,15 @@ class FunctionModel
     {
         $this->description = $description;
         return $this;
+   }
+
+    /**
+     * Get the argumentlist, to use in the template
+     *
+     * @return string
+     */
+    public function getArgumentList()
+    {
+        return $this->renderArgumentList($this->getArguments());
     }
-
-
 }

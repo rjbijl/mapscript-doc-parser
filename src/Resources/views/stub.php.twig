@@ -11,11 +11,11 @@
 
 // constants
 {% for constant in stub.constants %}
-const {{ constant.name }};
+const {{ constant.name }} = '';
 {% endfor %}
 
 {% for function in stub.functions %}
 {% include 'partials/signature.php.twig' with {'item': function} %}
-final function {{ function.name }}({% include 'partials/argumentList.php.twig' with {'arguments': function.arguments} %}) {}
+function {{ function.name }}({{ function.argumentList }}) {}
 
 {% endfor %}
