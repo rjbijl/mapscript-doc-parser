@@ -19,3 +19,9 @@
 {% include 'partials/globalFunction.php.twig' with {'function': function} %}
 
 {% endfor %}
+{% for class in stub.classes %}
+final class {{ class.className }}
+{
+}
+
+{% endfor %}

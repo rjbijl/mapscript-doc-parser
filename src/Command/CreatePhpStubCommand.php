@@ -3,6 +3,7 @@
 namespace Rjbijl\Command;
 
 use Rjbijl\Model\StubModel;
+use Rjbijl\Parser\ClassParser;
 use Rjbijl\Parser\ConstantsParser;
 use Rjbijl\Parser\FunctionsParser;
 use Rjbijl\Renderer\StubRenderer;
@@ -119,7 +120,7 @@ class CreatePhpStubCommand extends Command
             $output->writeln('Finished constants');
         }
 
-        return $this->parsedSections['constants'] = $parsedConstants;
+        return $parsedConstants;
     }
 
     /**
@@ -139,7 +140,7 @@ class CreatePhpStubCommand extends Command
             $output->writeln('Finished functions');
         }
 
-        return $this->parsedSections['functions'] = $parsedFunctions;
+        return $parsedFunctions;
     }
 
     /**
@@ -148,12 +149,14 @@ class CreatePhpStubCommand extends Command
      */
     private function parseClasses(OutputInterface $output)
     {
-        return [];
+        $parser = new ClassParser();
+        return $parser->parse($this->readSections['classes']);
     }
 
     /**
      * @param OutputInterface $output
      * @param StubModel $stubModel
+     * @return string
      */
     private function writeStub(OutputInterface $output, StubModel $stubModel)
     {
