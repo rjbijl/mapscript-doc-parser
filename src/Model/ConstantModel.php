@@ -9,4 +9,23 @@ namespace Rjbijl\Model;
  */
 class ConstantModel
 {
+    /**
+     * @var string
+     */
+    private $name;
+
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * Getter for name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

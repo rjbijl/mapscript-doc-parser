@@ -2,6 +2,8 @@
 
 namespace Rjbijl\Parser;
 
+use Rjbijl\Model\ConstantModel;
+
 /**
  * Rjbijl\Parser\ConstantsParser
  *
@@ -15,7 +17,6 @@ class ConstantsParser implements ParserInterface
     public function parse(array $lines)
     {
         $constants = [];
-        $section = '';
         foreach ($lines as $line) {
             if (empty(trim($line))) {
                 continue;
@@ -24,22 +25,23 @@ class ConstantsParser implements ParserInterface
                 continue;
             }
 
-            if (strstr($line, 'MS_') === false) {
-                if ('    ' === substr($line, 0, 4)) {
-                    $constants[$section]['comments'][] = trim($line);
-                } else {
-                    $section = $line;
-                }
-            } else {
+            if (strstr($line, 'MS_') !== false) {
                 $parts = explode(',', $line);
                 foreach ($parts as $part) {
-                    if (!empty($part)) {
-                        $constants[$section]['constants'][] = trim($part);
+                    if (!empty(trim($part))) {
+                        $constants[] = trim($part);
                     }
                 }
             }
         }
 
-        return $constants;
+        $constants = array_unique($constants);
+
+        $models = [];
+        foreach ($constants as $constant) {
+            $models[] = new ConstantModel($constant);
+        }
+
+        return $models;
     }
 }
