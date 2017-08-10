@@ -108,6 +108,11 @@ class ClassParser implements ParserInterface
             $line = next($membersArray);
         } while (!strstr($line, '===') && false !== $line);
 
+        // flush the last member
+        if (!in_array($currentMember, $members)) {
+            $members[] = $currentMember;
+        }
+
         return $members;
     }
 
@@ -140,11 +145,17 @@ class ClassParser implements ParserInterface
                     $signature->getArguments()
                 );
             } elseif (null !== $currentMethod) {
-                $currentMethod->addDescription(trim($line));
+                $line = str_replace(['/*', '*/'], [''], trim($line));
+                $currentMethod->addDescription($line);
             }
 
             $line = next($methodsArray);
-        } while ('.. index::' !== trim($line) && false !== $line);
+        } while ('.. index::' !== trim($line) && '.. _phpclusterobj:' !== trim($line) && false !== $line);
+
+        // flush the last method
+        if (!in_array($currentMethod, $methods)) {
+            $methods[] = $currentMethod;
+        }
 
         return $methods;
     }

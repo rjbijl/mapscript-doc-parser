@@ -12,8 +12,12 @@ trait ArgumentTrait
     /**
      * @var array
      */
-    protected $scalarTypes = ['int', 'integer', 'bool', 'boolean', 'string', 'float', 'double', 'const', 'char'];
+    protected $scalarTypes = ['int', 'integer', 'bool', 'boolean', 'string', 'float', 'double', 'const', 'char', 'mixed'];
 
+    /**
+     * @param array $arguments
+     * @return string
+     */
     protected function renderArgumentList(array $arguments)
     {
         $parsedArguments = [];

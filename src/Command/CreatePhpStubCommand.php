@@ -30,11 +30,6 @@ class CreatePhpStubCommand extends Command
     private $readSections = [];
 
     /**
-     * @var array
-     */
-    private $parsedSections = [];
-
-    /**
      * {@inheritdoc}
      */
     protected function configure()
@@ -81,17 +76,17 @@ class CreatePhpStubCommand extends Command
             $line = fgets($docs);
             switch (trim($line)) {
                 case 'Functions':
-//                    $output->writeln('Reading global functions');
+                    $output->writeln('Reading global functions', OutputInterface::VERBOSITY_VERBOSE);
                     if ($this->currentSection !== 'classes') {
                         $this->currentSection = 'functions';
                     }
                     break;
                 case 'Classes':
-//                    $output->writeln('Reading global classes');
+                    $output->writeln('Reading global classes', OutputInterface::VERBOSITY_VERBOSE);
                     $this->currentSection = 'classes';
                     break;
                 case 'Constants':
-//                    $output->writeln('Reading global constants');
+                    $output->writeln('Reading global constants', OutputInterface::VERBOSITY_VERBOSE);
                     $this->currentSection = 'constants';
                     break;
                 default:
@@ -115,10 +110,7 @@ class CreatePhpStubCommand extends Command
         }
 
         $parsedConstants = $parser->parse($this->readSections['constants']);
-
-        if ($output->isVerbose()) {
-            $output->writeln('Finished constants');
-        }
+        $output->writeln('Finished constants', OutputInterface::VERBOSITY_VERBOSE);
 
         return $parsedConstants;
     }
@@ -135,10 +127,7 @@ class CreatePhpStubCommand extends Command
         }
 
         $parsedFunctions = $parser->parse($this->readSections['functions']);
-
-        if ($output->isVerbose()) {
-            $output->writeln('Finished functions');
-        }
+        $output->writeln('Finished functions', OutputInterface::VERBOSITY_VERBOSE);
 
         return $parsedFunctions;
     }
