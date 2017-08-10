@@ -1,0 +1,12 @@
+    /**
+{% for line in method.description %}
+     * {{ line|raw }}
+{% endfor %}
+     *
+{% for argument in method.arguments %}
+     * @param {{ argument.type }} ${{ argument.name }}
+{% endfor %}
+     * @return {{ method.returnType }}
+     */
+    final public function {{ method.name }}({{ method.argumentList }}) {}
+

@@ -12,7 +12,7 @@ trait ArgumentTrait
     /**
      * @var array
      */
-    protected $scalarTypes = ['int', 'integer', 'bool', 'boolean', 'string', 'float'];
+    protected $scalarTypes = ['int', 'integer', 'bool', 'boolean', 'string', 'float', 'double', 'const', 'char'];
 
     protected function renderArgumentList(array $arguments)
     {

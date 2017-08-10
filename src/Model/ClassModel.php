@@ -18,16 +18,22 @@ class ClassModel
      * @var ClassMemberModel[]
      */
     private $members;
+    /**
+     * @var ClassMethodModel[]
+     */
+    private $methods;
 
     /**
      * ClassModel constructor.
      * @param string $className
-     * @param array $members
+     * @param ClassMemberModel[] $members
+     * @param ClassMethodModel[] $methods
      */
-    public function __construct($className, array $members)
+    public function __construct($className, array $members, array $methods)
     {
         $this->className = $className;
         $this->members = $members;
+        $this->methods = $methods;
     }
 
     /**
@@ -48,5 +54,15 @@ class ClassModel
     public function getMembers()
     {
         return $this->members;
+    }
+
+    /**
+     * Getter for methods
+     *
+     * @return ClassMethodModel[]
+     */
+    public function getMethods()
+    {
+        return $this->methods;
     }
 }

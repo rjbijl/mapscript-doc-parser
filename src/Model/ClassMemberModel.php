@@ -20,7 +20,7 @@ class ClassMemberModel
     private $type;
 
     /**
-     * @var string
+     * @var string[]
      */
     private $description;
 
@@ -28,9 +28,9 @@ class ClassMemberModel
      * ClassMemberModel constructor.
      * @param string $name
      * @param string $type
-     * @param string $description
+     * @param array $description
      */
-    public function __construct($name, $type, $description = '')
+    public function __construct($name, $type, array $description = [])
     {
         $this->name = $name;
         $this->type = $type;
@@ -65,5 +65,18 @@ class ClassMemberModel
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Added for description
+     *
+     * @param $line
+     * @return self
+     */
+    public function addDescription($line)
+    {
+        $this->description[] = $line;
+
+        return $this;
     }
 }

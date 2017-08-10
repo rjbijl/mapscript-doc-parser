@@ -25,13 +25,18 @@ final class {{ class.className }}
 {% for member in class.members %}
     /**
 {% if member.description is not empty %}
-     * {{ member.description }}
+{% for line in member.description %}
+     * {{ line }}
+{% endfor %}
      *
 {% endif %}
      * @var {{ member.type }}
      */
     public ${{ member.name }};
 
+{% endfor %}
+{% for method in class.methods %}
+{% include 'partials/method.php.twig' with {'method': method} %}
 {% endfor %}
 }
 
