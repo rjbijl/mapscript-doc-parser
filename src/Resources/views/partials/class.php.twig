@@ -1,0 +1,29 @@
+{% if class.descriptions is not empty %}
+ /**
+{% for line in class.descriptions %}
+  * {{ line }}
+{% endfor %}
+  */
+{% endif %}
+final class {{ class.className }}
+{
+{% for member in class.members %}
+    /**
+{% if member.description is not empty %}
+{% for line in member.description %}
+     * {{ line }}
+{% endfor %}
+     *
+{% endif %}
+     * @var {{ member.type }}
+     */
+    public ${{ member.name }};
+
+{% endfor %}
+{% for method in class.constructors %}
+{% include 'partials/method.php.twig' with {'method': method} %}
+{% endfor %}
+{% for method in class.methods %}
+{% include 'partials/method.php.twig' with {'method': method} %}
+{% endfor %}
+}

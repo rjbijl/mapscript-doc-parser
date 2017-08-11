@@ -6,7 +6,9 @@
 {% for argument in method.arguments %}
      * @param {{ argument.type }} ${{ argument.name }}
 {% endfor %}
+{% if method.returnType is not empty %}
      * @return {{ method.returnType }}
+{% endif %}
      */
     final public function {{ method.name }}({{ method.argumentList }}) {}
 

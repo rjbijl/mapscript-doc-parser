@@ -77,13 +77,72 @@ class ClassParser implements ParserInterface
      */
     private function parseClass(array $classArray)
     {
+        list($constructors, $descriptions) = isset($classArray['Constructor']) 
+            ? $this->parseConstructors($classArray['Constructor']) 
+            : [[], []]
+        ;
         $members = isset($classArray['Members']) ? $this->parseClassMembers($classArray['Members']) : [];
         $methods = isset($classArray['Methods']) ? $this->parseClassMethods($classArray['Methods']) : [];
-        $model = new ClassModel($classArray['className'], $members, $methods);
+        $model = new ClassModel($classArray['className'], $constructors, $descriptions, $members, $methods);
 
         return $model;
     }
 
+    /**
+     * @param $constructorsArray
+     * @return array
+     */
+    private function parseConstructors($constructorsArray)
+    {
+        $constructorsArray = array_splice($constructorsArray, 1);
+        $line = reset($constructorsArray);
+        $constructors = [];
+        /** @var ClassMethodModel $newConstructor */
+        $newConstructor = null;
+        /** @var ClassMethodModel $oldConstructor */
+        $oldConstructor = null;
+        $globalComments = [];
+        do {
+            if ('.. code-block:: php' === trim($line) || strstr($line, 'old constructor')) {
+                $line = next($constructorsArray);
+                continue;
+            }
+
+            if ($this->isSignature(trim($line), true)) {
+                $signature = $this->parseConstructorSignature($line);
+                $newConstructor = new ClassMethodModel(
+                    '__construct',
+                    '',
+                    $signature->getArguments()
+                );
+            } else if ($this->isSignature(trim($line))) {
+                $signature = $this->parseSignature($line);
+                $oldConstructor = new ClassMethodModel(
+                    $signature->getName(),
+                    $signature->getReturnType(),
+                    $signature->getArguments()
+                );
+            } else {
+                if (null !== $newConstructor) {
+                    $newConstructor->addDescription(trim($line));
+                } else {
+                    $globalComments[] = trim($line);
+                }
+            }
+            
+            $line = next($constructorsArray);
+        } while (false !== $line);
+    
+        if (null !== $newConstructor) {
+            $constructors[] = $newConstructor;
+        }
+        if (null !== $oldConstructor) {
+            $constructors[] = $oldConstructor;
+        }
+
+        return [$constructors, $globalComments];
+    }
+    
     /**
      * @param array $membersArray
      * @return ClassMemberModel[]

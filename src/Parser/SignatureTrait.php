@@ -15,22 +15,29 @@ trait SignatureTrait
     /**
      * @var string
      */
-    private $signatureRegex = '/(.*)\s(.*)\(((.*)\s(.*))*\)$/';
+    private $signatureRegex = '/([^=\s]+)\s([^=\s]+)\((([^=]*)\s([^=]*))*\)$/';
+
+    /**
+     * @var string
+     */
+    private $constructorSignatureRegex = '/new\s(.*)\(((.*)\s(.*))*\)$/';
 
     /**
      * Check if the line contains a signature
      *
      * @param string $line
+     * @param bool $constructor
      * @return int
      */
-    protected function isSignature($line)
+    protected function isSignature($line, $constructor = false)
     {
+        $regex = $constructor ? $this->constructorSignatureRegex : $this->signatureRegex;
         // if the line starts with a space, it is not
         if (' ' === substr($line, 0, 1)) {
             return false;
         }
 
-        return preg_match($this->signatureRegex, trim($line));
+        return preg_match($regex, trim($line));
     }
 
     /**
@@ -42,23 +49,36 @@ trait SignatureTrait
         // parse the signature for the name and returnType
         preg_match($this->signatureRegex, trim($signature), $matches);
 
-        return new SignatureModel($matches[2], $matches[1], $this->getArguments($matches));
+        return new SignatureModel($matches[2], $matches[1], $this->getArguments($matches, 3));
+    }
+
+    /**
+     * @param string $signature
+     * @return SignatureModel
+     */
+    protected function parseConstructorSignature($signature)
+    {
+        // parse the signature for the name and returnType
+        preg_match($this->constructorSignatureRegex, trim($signature), $matches);
+
+        return new SignatureModel($matches[1], $matches[1], $this->getArguments($matches, 2));
     }
 
     /**
      * Get the arguments parsed from a signature
      *
-     * @param $matches
+     * @param array $matches
+     * @param int $index
      * @return array
      */
-    protected function getArguments($matches)
+    protected function getArguments(array $matches, $index)
     {
         $arguments = [];
-        if (!isset($matches[3])) {
+        if (!isset($matches[$index])) {
             return [];
         }
 
-        $cleanedUpArguments = str_replace(['[', ']'], [''], $matches[3]);
+        $cleanedUpArguments = str_replace(['[', ']'], [''], $matches[$index]);
         $argumentsParts = explode(',', $cleanedUpArguments);
 
         foreach ($argumentsParts as $argument) {
