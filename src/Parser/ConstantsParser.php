@@ -31,7 +31,7 @@ class ConstantsParser implements ParserInterface
                     if (!empty(trim($part)) && preg_match('/([A-Z_0-9]*)\s*(.*)$/', trim($part), $matches)) {
                         if (!isset($constants[$matches[1]])) {
                             $constants[$matches[1]] = [
-                                'value' => '\'\'',
+                                'value' => constant($matches[1]),
                                 'description' => $matches[2],
                             ];
                         }
