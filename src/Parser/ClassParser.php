@@ -120,7 +120,8 @@ class ClassParser implements ParserInterface
                 $oldConstructor = new ClassMethodModel(
                     $signature->getName(),
                     $signature->getReturnType(),
-                    $signature->getArguments()
+                    $signature->getArguments(),
+                    ['Old style constructor']
                 );
             } else {
                 if (null !== $newConstructor) {
