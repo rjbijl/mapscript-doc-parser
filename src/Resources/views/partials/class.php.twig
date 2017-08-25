@@ -1,7 +1,7 @@
 {% if class.descriptions is not empty %}
  /**
 {% for line in class.descriptions %}
-  * {{ line }}
+  * {{ line|raw }}
 {% endfor %}
   */
 {% endif %}
@@ -11,7 +11,7 @@ final class {{ class.className }}
     /**
 {% if member.description is not empty %}
 {% for line in member.description %}
-     * {{ line }}
+     * {{ line|raw }}
 {% endfor %}
      *
 {% endif %}

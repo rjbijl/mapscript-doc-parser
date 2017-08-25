@@ -1,6 +1,6 @@
 /**
 {% for line in item.description %}
- * {{ line }}
+ * {{ line|raw }}
 {% endfor %}
  *
 {% for argument in item.arguments %}
